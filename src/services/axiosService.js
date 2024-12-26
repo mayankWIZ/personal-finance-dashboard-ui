@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import { useAuth } from '../context/AuthContext';
 
 const axiosInstance = axios.create({
     baseURL: `${process.env.REACT_APP_BASE_URL}/api`,
@@ -17,10 +16,18 @@ axiosInstance.interceptors.request.use((config) => {
 axiosInstance.interceptors.response.use(
     (response) => response,
     (error) => {
-        const { logout } = useAuth();
         if (error.response?.status === 401) {
-            logout();
-            toast.error('Unauthorized');
+            // If change password in message navigate to change password page
+            const user = JSON.parse(localStorage.getItem("user"));
+            if (user?.firstLogin) {
+                toast.warning("Please change your password first.");
+                window.location.href = "/change-password";
+            } else {
+                // If not navigate to login
+                localStorage.removeItem("access_token");
+                localStorage.removeItem("user");
+                window.location.href = "/login";
+            }
         }
         return Promise.reject(error);
     }

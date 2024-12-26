@@ -1,6 +1,7 @@
-import React, { createContext, useState, useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import React, { createContext } from "react";
+import { useNavigate } from "react-router-dom";
 import { getToken } from "../services/apiService";
+import { toast } from "react-toastify";
 
 export const AuthContext = createContext();
 
@@ -9,67 +10,52 @@ export const useAuth = () => {
 };
 
 export const AuthProvider = ({ children }) => {
-  const [authState, setAuthState] = useState({
-    access_token: null,
-    user: null
-  });
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
-  const location = useLocation();
-
-  useEffect(() => {
-    loadAuthState();
-  }, [location?.pathname]);
-
-  const loadAuthState = () => {
-    const accessToken = localStorage.getItem("access_token");
-    const user = localStorage.getItem("user");
-    if (accessToken && user) {
-      setAuthState({
-        access_token: accessToken,
-        user: JSON.parse(user)
-      });
-      setIsLoggedIn(true);
-    }
-  };
 
   const login = (username, password) => {
     getToken(username, password)
       .then((response) => {
         const { access_token, ...user } = response.data;
         localStorage.setItem("access_token", access_token);
-        localStorage.setItem("user", JSON.stringify(user));
-        setAuthState({
-          access_token: access_token,
-          user: user,
-        });
-        setIsLoggedIn(true);
-        navigate("/");
+        localStorage.setItem("user", JSON.stringify({...user, username}));
+        toast.success("Login successful.");
+        if (user.firstLogin) {
+          navigate("/change-password");
+        } else {
+          navigate("/");
+        }
       })
       .catch((error) => {
-        console.error("Error logging in:", error);
         navigate("/login", {
           state: { message: "Invalid credentials. Please try again." },
         });
       });
   };
 
-  const logout = () => {
+  const logout = (message = "") => {
     localStorage.removeItem("access_token");
     localStorage.removeItem("user");
-    setAuthState({ access_token: null, user: null, isLoggedIn: false });
-    setIsLoggedIn(false);
+    toast.error(message || "You have been logged out.");
     navigate("/login", {
-      state: { message: "Session expired. Please login again." },
+      state: { message: message || "You have been logged out." },
     });
   };
 
-  const hasScope = (scope) => {
-    return authState.user?.scopes?.includes(scope);
+  const hasScopes = (scopes, checkType = "every") => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    return scopes?.[checkType]((scope) =>
+      user?.scopes?.includes(scope)
+    );
+  };
+
+  const authState = {
+    access_token: localStorage.getItem("access_token"),
+    user: JSON.parse(localStorage.getItem("user")),
+    isLoggedIn: !!localStorage.getItem("access_token"),
   };
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn,authState, login, logout, hasScope }}>
+    <AuthContext.Provider value={{ authState, login, logout, hasScopes }}>
       {children}
     </AuthContext.Provider>
   );

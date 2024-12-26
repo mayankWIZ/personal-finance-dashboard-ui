@@ -8,7 +8,7 @@ const AppRoutes = () => {
     return (
         <Routes>
             <Route path="/login" element={<Login />} />
-            <Route path="/" element={<ProtectedRoute scopes={['admin']} />} >
+            <Route path="/" element={<ProtectedRoute scopes={['me']} />} >
                 <Route path="/" element={<Dashboard />} />
             </Route>
         </Routes>

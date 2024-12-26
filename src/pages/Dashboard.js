@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { Typography, Box } from '@mui/material';
 import Grid from '@mui/material/Grid2'
-import { useAuth } from '../context/AuthContext';
 import { getExchangeRates } from '../services/apiService';
 import { DataGrid, useGridApiRef } from '@mui/x-data-grid'
 
@@ -11,12 +10,17 @@ const Dashboard = () => {
         rates: {},
     });
     const apiRef = useGridApiRef();
-    const autosizeOptions = {
-        includeHeaders: true,
-        includeOutliers: true,
-        outliersFactor: 10,
-        expand: true,
-    };
+    const autosizeOptions = useMemo(
+        () => {
+            return {
+                includeHeaders: true,
+                includeOutliers: true,
+                outliersFactor: 10,
+                expand: true,
+            }
+        },
+        []
+    )
     useEffect(() => {
         getExchangeRates()
             .then((response) => {
@@ -28,7 +32,7 @@ const Dashboard = () => {
             .catch((error) => {
                 console.error('Error fetching exchange rates:', error);
             });
-    }, [getExchangeRates]);
+    }, [apiRef, autosizeOptions]);
 
     const columns = useMemo(() => [
         { field: 'currency', headerName: 'Currency', sortable: true },

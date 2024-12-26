@@ -4,7 +4,6 @@ import { useAuth } from '../context/AuthContext';
 import { useLocation } from 'react-router-dom';
 import { CustomButton } from '../components/common/Button'
 import { CustomTextField } from '../components/common/CustomTextField';
-import { CustomDateTimeField } from '../components/common/CustomDateTimeField';
 const Login = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -42,7 +41,6 @@ const Login = () => {
                 Login
             </CustomButton>
             <Link href="#">Need an account? SIGN UP</Link>
-            <CustomDateTimeField/>
         </Box>
     );
 };
