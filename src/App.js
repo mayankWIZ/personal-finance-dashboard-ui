@@ -4,10 +4,13 @@ import AppRoutes from './routes/AppRoutes';
 import { AuthProvider } from './context/AuthContext';
 import { CustomThemeProvider } from './context/ThemeContext';
 import Header from './components/common/Header';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 
 const App = () => {
     return (
-        <Router>
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <Router> 
           <CustomThemeProvider>
             <AuthProvider>
                 <Header />
@@ -15,6 +18,7 @@ const App = () => {
             </AuthProvider>
           </CustomThemeProvider>
         </Router>
+        </LocalizationProvider>
     );
 };
 

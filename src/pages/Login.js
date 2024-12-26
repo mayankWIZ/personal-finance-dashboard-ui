@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
-import { TextField, Button, Box, Typography } from '@mui/material';
+import { Box, Typography, Link } from '@mui/material';
 import { useAuth } from '../context/AuthContext';
 import { useLocation } from 'react-router-dom';
-
+import { CustomButton } from '../components/common/Button'
+import { CustomTextField } from '../components/common/CustomTextField';
+import { CustomDateTimeField } from '../components/common/CustomDateTimeField';
 const Login = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -22,24 +24,25 @@ const Login = () => {
         <Box sx={{ maxWidth: 400, mx: 'auto', mt: 5 }}>
             <Typography variant="h5">Login</Typography>
             {message && <Typography color="error">{message}</Typography>}
-            <TextField
-                label="Username"
+
+            <CustomTextField isPrimary={true} label="Username"
                 fullWidth
                 margin="normal"
                 value={username}
-                onChange={(e) => setUsername(e.target.value)}
-            />
-            <TextField
-                label="Password"
+                onChange={(e) => setUsername(e.target.value)}/>
+        
+            <CustomTextField isPrimary={true} label="Password"
                 type="password"
                 fullWidth
                 margin="normal"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
-            />
-            <Button variant="contained" color="primary" fullWidth onClick={handleLogin}>
+                onChange={(e) => setPassword(e.target.value)}/>
+           
+            <CustomButton isPrimary={true}  fullWidth onClick={handleLogin}>
                 Login
-            </Button>
+            </CustomButton>
+            <Link href="#">Need an account? SIGN UP</Link>
+            <CustomDateTimeField/>
         </Box>
     );
 };

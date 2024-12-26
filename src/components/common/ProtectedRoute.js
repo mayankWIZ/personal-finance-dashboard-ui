@@ -3,9 +3,8 @@ import { Navigate, Outlet  } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 
 const ProtectedRoute = ({ scopes }) => {
-    const { isLoggedIn } = useAuth();
-    
-    return <Outlet />;
+    const isLoggedIn = localStorage.getItem("access_token") && localStorage.getItem("user");
+    return isLoggedIn? <Outlet />:<Navigate to="/login"/>;
 };
 
 export default ProtectedRoute;
