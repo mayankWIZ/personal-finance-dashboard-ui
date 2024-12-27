@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -139,46 +139,47 @@ function ResponsiveAppBar() {
           >
             PFD
           </Typography>
-
-          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
-            <IconButton
-              size="large"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleOpenNavMenu}
-              color="inherit"
-            >
-              <MenuIcon />
-            </IconButton>
-            <Menu
-              id="menu-appbar"
-              anchorEl={anchorElNav}
-              anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'left',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'left',
-              }}
-              open={Boolean(anchorElNav)}
-              onClose={handleCloseNavMenu}
-              sx={{ display: { xs: 'block', md: 'none' } }}
-            >
-              {
-                Object.values(pages).map((page) => {
-                  if (!hasScopes(page.scopes)) return null;
-                  return  (
-                    <MenuItem key={page.key} onClick={() => navigateTo(page.path)}>
-                      <Typography sx={{ textAlign: 'center' }}>{page.name}</Typography>
-                    </MenuItem>
-                  )
-                })
-              }
-            </Menu>
-          </Box>
+          {authState.isLoggedIn && (
+            <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+                <IconButton
+                  size="large"
+                  aria-label="account of current user"
+                  aria-controls="menu-appbar"
+                  aria-haspopup="true"
+                  onClick={handleOpenNavMenu}
+                  color="inherit"
+                >
+                <MenuIcon />
+              </IconButton>
+              <Menu
+                id="menu-appbar"
+                anchorEl={anchorElNav}
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'left',
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'left',
+                }}
+                open={Boolean(anchorElNav)}
+                onClose={handleCloseNavMenu}
+                sx={{ display: { xs: 'block', md: 'none' } }}
+              >
+                {
+                  Object.values(pages).map((page) => {
+                    if (!hasScopes(page.scopes)) return null;
+                    return  (
+                      <MenuItem key={page.key} onClick={() => navigateTo(page.path)}>
+                        <Typography sx={{ textAlign: 'center' }}>{page.name}</Typography>
+                      </MenuItem>
+                    )
+                  })
+                }
+              </Menu>
+            </Box>
+          )}
           <MonetizationOnIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1, fontSize: "2rem" }} />
           <Typography
             variant="h4"

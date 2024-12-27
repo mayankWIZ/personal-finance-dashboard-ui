@@ -5,6 +5,8 @@ import Login from '../pages/Login';
 import SignUp from '../pages/SignUp';
 import Dashboard from '../pages/Dashboard';
 import ChangePassword from '../pages/ChangePassword';
+import { Users } from '../pages/Users';
+import { Transactions } from '../pages/Transactions';
 
 const AppRoutes = () => {
     return (
@@ -20,6 +22,12 @@ const AppRoutes = () => {
             </Route>
             <Route path="/change-password" element={<ProtectedRoute scopes={['me']} />} >
                 <Route path="/change-password" element={<ChangePassword />} />
+            </Route>
+            <Route path='/users' element={<ProtectedRoute scopes={['me']} />} >
+                <Route path='/users' element={<Users />} />
+            </Route>
+            <Route path="/transactions" element={<ProtectedRoute scopes={['me', 'transaction_read']} />} >
+                <Route path="/transactions" element={<Transactions />} />
             </Route>
         </Routes>
     );

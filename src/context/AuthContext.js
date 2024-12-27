@@ -9,7 +9,7 @@ export const useAuth = () => {
   return React.useContext(AuthContext);
 };
 
-export const AuthProvider = ({ children }) => {
+export function AuthProvider({ children }) {
   const navigate = useNavigate();
 
   const login = (username, password) => {
