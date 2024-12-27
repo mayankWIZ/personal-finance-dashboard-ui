@@ -45,13 +45,13 @@ const Dashboard = () => {
         <Box sx={{ flexGrow: 1 }}>
             <Grid container>
                 <Grid size={12}>
-                    <Typography variant="h4" gutterBottom>
+                    <Typography variant="h4" gutterBottom color='textPrimary' >
                         Dashboard
                     </Typography>
                 </Grid>
                 <Grid size={12} columns={1} spacing={0.5}>
                     <Grid size={4}>
-                        <Typography variant="subtitle1">
+                        <Typography variant="subtitle1" color='textSecondary' >
                             Exchange Rates
                         </Typography>
                     </Grid>

@@ -1,5 +1,5 @@
 import React, { createContext, useState } from 'react';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { ThemeProvider, createTheme, responsiveFontSizes } from '@mui/material/styles';
 import { CustomContainer as Container } from '../components/common/CustomContainer';
 
 export const ThemeContext = createContext();
@@ -8,22 +8,27 @@ export const useTheme = () => {
 };
 
 const themes = {
-    dark: createTheme({
+    dark: responsiveFontSizes(createTheme({
         palette: {
             mode: 'dark',
         },
-    }),
-    light: createTheme({
+    })),
+    light: responsiveFontSizes(createTheme({
         palette: {
             mode: 'light',
         },
-    }),
+    })),
 };
 
 export const CustomThemeProvider = ({ children }) => {
-    const [ mode, setMode ] = useState("light");
+    const [ mode, setMode ] = useState(localStorage.getItem("mode") || 'light');
     const toggleTheme = () => {
-        setMode((prev) => (prev === 'light' ? 'dark' : 'light'));
+        let finalMode;
+        setMode((prev) => {
+            finalMode = prev === 'light' ? 'dark' : 'light';
+            return finalMode;
+        });
+        localStorage.setItem("mode", finalMode);
     };
 
     return (

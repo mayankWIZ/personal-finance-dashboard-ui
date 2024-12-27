@@ -44,8 +44,19 @@ const pages = {
   },
 };
 
+
+function stringAvatar(name) {
+  let names = name.split(' ');
+  return {
+    sx: {
+      bgcolor: 'secondary.main',
+    },
+    children: `${names[0][0]?.toUpperCase()}${names?.[1]? names[1][0]: ''}`,
+  };
+}
+
 function ResponsiveAppBar() {
-  const { toggleTheme } = useTheme();
+  const { toggleTheme, mode } = useTheme();
   const { hasScopes, authState, logout } = useAuth();
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
@@ -53,6 +64,20 @@ function ResponsiveAppBar() {
   const navigate = useNavigate();
 
   const settings = {
+    theme: {
+      name: mode?.toUpperCase(),
+      handler: () => {
+        handleCloseNavMenu();
+        handleCloseUserMenu();
+        toggleTheme();
+      },
+      element: (
+        <FormGroup>
+          <FormControlLabel control={<Switch checked={mode === 'dark'} onChange={toggleTheme} />} label="Dark" />
+        </FormGroup>
+      ),
+      scopes: [],
+    },
     change_password: {
       name: 'Change Password',
       key: 'change_password',
@@ -191,14 +216,14 @@ function ResponsiveAppBar() {
           </Box>
           <Box sx={{ flexGrow: 0 }}>
             <FormGroup>
-              <FormControlLabel control={<Switch onClick={toggleTheme} size='small' />} label="Toggle Theme" labelPlacement="top" />
+              <FormControlLabel control={<Switch onClick={toggleTheme} size='small' checked={mode === 'dark'} />} label="Toggle Theme" labelPlacement="top" />
             </FormGroup>
           </Box>
           {authState.isLoggedIn && (
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar alt={authState.username} />
+                  <Avatar {...stringAvatar(authState?.user?.username)} />
                 </IconButton>
               </Tooltip>
               <Menu
@@ -221,7 +246,11 @@ function ResponsiveAppBar() {
                   if (!hasScopes(setting.scopes)) return null;
                   return (
                     <MenuItem key={setting.key} onClick={ setting.handler ? setting.handler : () => navigateTo(setting.path)}>
-                      <Typography sx={{ textAlign: 'center' }}>{setting.name}</Typography>
+                      {
+                        setting.element ? setting.element : (
+                          <Typography sx={{ textAlign: 'center' }}>{setting.name}</Typography>
+                        )
+                      }
                     </MenuItem>
                   )
                 })}
