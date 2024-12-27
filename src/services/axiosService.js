@@ -29,6 +29,19 @@ axiosInstance.interceptors.response.use(
                 window.location.href = "/login";
             }
         }
+        // Construct validation message for all 422 validation error
+        if (error.response && error.response.status === 422) {
+            let details = error.response.data.detail[0];
+            let message = `${details.msg?.replace(/^value error,/i, "")}`;
+            error.response.data = { detail: message };
+        } else if (error.response && error.response.data.detail) {
+            // pass
+        } else if (error.response && error.response.statusText) {
+            error.response.data = { detail: error.response.statusText };
+        } else {
+            error.response.data.detail =
+            error.message || "Error while connecting to server";
+        }
         return Promise.reject(error);
     }
 );

@@ -17,7 +17,7 @@ export const AuthProvider = ({ children }) => {
       .then((response) => {
         const { access_token, ...user } = response.data;
         localStorage.setItem("access_token", access_token);
-        localStorage.setItem("user", JSON.stringify({...user, username}));
+        localStorage.setItem("user", JSON.stringify(user));
         toast.success("Login successful.");
         if (user.firstLogin) {
           navigate("/change-password");

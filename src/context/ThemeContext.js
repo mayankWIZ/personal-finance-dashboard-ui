@@ -21,7 +21,7 @@ const themes = {
 };
 
 export const CustomThemeProvider = ({ children }) => {
-    const [ mode, setMode ] = useState(localStorage.getItem("mode") || 'light');
+    const [ mode, setMode ] = useState(localStorage.getItem("mode") ?? 'light');
     const toggleTheme = () => {
         let finalMode;
         setMode((prev) => {

@@ -12,7 +12,7 @@ import AppRoutes from './routes/AppRoutes';
 const App = () => {
     return (
       <div>
-        <ToastContainer transition={Slide} limit={5} />
+        <ToastContainer transition={Slide} limit={5} autoClose={1000} />
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <Router> 
             <CustomThemeProvider>

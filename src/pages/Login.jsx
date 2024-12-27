@@ -10,7 +10,6 @@ const Login = () => {
     const { login } = useAuth();
     const location = useLocation();
     const message = location.state?.message;
-
     const handleLogin = async (e) => {        
         e.preventDefault();
         try {
@@ -45,7 +44,7 @@ const Login = () => {
             <CustomButton type="submit" isPrimary={true} fullWidth sx={{ marginBottom: 1 }}>
                 Login
             </CustomButton>
-            <Link href="#">Need an account? SIGN UP</Link>
+            <Link href="/signup">Need an account?</Link>
         </Box>
     );
 };

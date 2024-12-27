@@ -73,7 +73,7 @@ function ResponsiveAppBar() {
       },
       element: (
         <FormGroup>
-          <FormControlLabel control={<Switch checked={mode === 'dark'} onChange={toggleTheme} />} label="Dark" />
+          <FormControlLabel control={<Switch checked={mode === 'dark'} />} label={mode==='dark' ? 'Light' : 'Dark'} />
         </FormGroup>
       ),
       scopes: [],
@@ -214,16 +214,18 @@ function ResponsiveAppBar() {
               })
             }
           </Box>
-          <Box sx={{ flexGrow: 0 }}>
-            <FormGroup>
-              <FormControlLabel control={<Switch onClick={toggleTheme} size='small' checked={mode === 'dark'} />} label="Toggle Theme" labelPlacement="top" />
-            </FormGroup>
-          </Box>
+          {!authState.isLoggedIn && (
+            <Box sx={{ flexGrow: 0 }}>
+              <FormGroup>
+                <FormControlLabel control={<Switch onClick={toggleTheme} size='small' checked={mode === 'dark'} />} label="Toggle Theme" labelPlacement="top" />
+              </FormGroup>
+            </Box>)
+          }
           {authState.isLoggedIn && (
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar {...stringAvatar(authState?.user?.username)} />
+                  <Avatar {...stringAvatar(authState?.user?.fullName ?? authState?.user?.username)} />
                 </IconButton>
               </Tooltip>
               <Menu
