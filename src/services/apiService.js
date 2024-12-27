@@ -57,6 +57,10 @@ function getExchangeRates() {
     return axiosInstance.get("/exchange-rates");
 }
 
+function getTransactions() {
+    return axiosInstance.get("/transactions/dashboard")
+}
+
 export {
     getToken,
     getUser,
@@ -70,5 +74,9 @@ export {
     updateTransaction,
     deleteTransaction,
     getExchangeRates,
+<<<<<<< Updated upstream
     changePassword,
+=======
+    getTransactions
+>>>>>>> Stashed changes
 };
