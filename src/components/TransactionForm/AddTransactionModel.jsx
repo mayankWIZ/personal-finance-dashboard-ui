@@ -1,5 +1,6 @@
-import { Modal, Typography, Grid2 as Grid, MenuItem, Box } from "@mui/material";
+import { Modal, Typography, Grid2 as Grid, MenuItem, Box, InputAdornment } from "@mui/material";
 import React, { useState } from "react";
+import AttachMoneySharpIcon from '@mui/icons-material/AttachMoneySharp';
 import { CustomTextField } from "../common/CustomTextField";
 import { CustomButton } from "../common/Button";
 import { useTheme } from "../../context/ThemeContext";
@@ -90,8 +91,13 @@ export const AddTransactionModel = ({ open, handleClose, onSubmit }) => {
               fullWidth
               margin="normal"
               value={transaction?.transactionDate}
-              onChange={(e) => setTransaction({ ...transaction, transactionDate: e.target.value })}
+              onChange={(e) => {
+                console.log("e", e);
+                debugger
+                setTransaction({ ...transaction, transactionDate: e })
+              }}
               required={true}
+              sx={{ width: "100%" }}
             />
 
             <CustomTextField
@@ -103,6 +109,15 @@ export const AddTransactionModel = ({ open, handleClose, onSubmit }) => {
               onChange={(e) => setTransaction({ ...transaction, amount: e.target.value })}
               required={true}
               type="number"
+              slotProps={{
+                input: {
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <AttachMoneySharpIcon />
+                    </InputAdornment>
+                  ),
+                },
+              }}
             />
 
             <CustomTextField

@@ -159,6 +159,11 @@ export const Users = () => {
                 }
               }
             ]}
+            initialState={{
+              sorting: {
+                sortModel: [{ field: 'username', sort: 'asc' }],
+              },
+            }}
             autoPageSize={true}
             disableColumnResize={true}
             editMode="row"

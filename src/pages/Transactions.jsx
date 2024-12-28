@@ -43,9 +43,10 @@ const columns = [
   {
     field: "amount",
     headerName: "Amount",
-    type: "string",
+    type: "number",
     editable: true,
-    align: "left"
+    align: "left",
+    valueFormatter: (value) => value && value.toLocaleString("en-US", { style: "currency", currency: "USD" })
   },
   {
     field: "description",
@@ -82,7 +83,7 @@ export const Transactions = () => {
   const handleTransactionCreate = ({ ...transaction }) => {
     setLoading(true);
     createTransaction(transaction).then((response) => {
-      apiRef.current.updateRows([response.data]);
+      setTransactions([...transactions, response.data]);
       toast.success("Transaction created successfully.");
       setAddTransactionModelOpen(false);
     }).catch((error) => {
@@ -98,7 +99,7 @@ export const Transactions = () => {
   const handleDeleteTransaction = (row) => {
     setLoading(true);
     deleteTransaction(row.id).then((response) => {
-      apiRef.current.updateRows([{...row, _action: 'delete'}]);
+      setTransactions(transactions.filter((transaction) => transaction.id !== row.id));
       toast.success("Transaction deleted successfully.");
     }).catch((error) => {
       toast.error(
@@ -113,7 +114,7 @@ export const Transactions = () => {
   const handleEditTransaction = (newData, _) => {
     setLoading(true);
     updateTransaction(newData.id, newData).then((response) => {
-      apiRef.current.updateRows([{...response.data, _action: 'update'}]);
+      setTransactions(transactions.map((transaction) => transaction.id === newData.id ? response.data : transaction));
       toast.success("Transaction updated successfully.");
     }).catch((error) => {
       toast.error(
@@ -181,6 +182,11 @@ export const Transactions = () => {
                 }
               }
             ]}
+            initialState={{
+              sorting: {
+                sortModel: [{ field: 'transactionDate', sort: 'desc' }],
+              },
+            }}
             autoPageSize={true}
             disableColumnResize={true}
             editMode={hasWriteAccess ? "row" : "disabled"}

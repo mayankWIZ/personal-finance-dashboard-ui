@@ -43,7 +43,7 @@ const Dashboard = () => {
       { field: "currency", headerName: "Currency", sortable: true },
       {
         field: "rate",
-        headerName: `Rate (${exchangeRates?.base})`,
+        headerName: `Rate (USD)`,
         sortable: true,
       },
     ],
@@ -205,13 +205,19 @@ const Dashboard = () => {
               <CustomDataGrid
                 rows={rows}
                 columns={columns}
+                initialState={{
+                  sorting: {
+                    sortModel: [{ field: 'rate', sort: 'desc' }],
+                  },
+                }}
                 autoPageSize={true}
                 disableColumnResize={true}
                 filterMode="client"
                 autosizeOptions={{
+                    columns: ["currency", "rate"],
                     includeHeaders: true,
                     includeOutliers: true,
-                    outliersFactor: 0,
+                    outliersFactor: 10,
                     expand: true,
                 }}
                 autosizeOnMount={true}
