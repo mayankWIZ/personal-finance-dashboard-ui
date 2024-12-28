@@ -7,6 +7,8 @@ import Dashboard from '../pages/Dashboard';
 import ChangePassword from '../pages/ChangePassword';
 import { Users } from '../pages/Users';
 import { Transactions } from '../pages/Transactions';
+import { TransactionBulkUploadDownload } from '../pages/TransactionBulkUploadDownload';
+import { NotFoundPage } from '../pages/NotFoundPage';
 
 const AppRoutes = () => {
     return (
@@ -29,6 +31,10 @@ const AppRoutes = () => {
             <Route path="/transactions" element={<ProtectedRoute scopes={['me', 'transaction_read']} />} >
                 <Route path="/transactions" element={<Transactions />} />
             </Route>
+            <Route path="/bulk-transactions" element={<ProtectedRoute scopes={['me', 'transaction_read', 'transaction_write', 'admin']} />} >
+                <Route path="/bulk-transactions" element={<TransactionBulkUploadDownload />} />
+            </Route>
+            <Route path="*" element={<NotFoundPage />} />
         </Routes>
     );
 };
