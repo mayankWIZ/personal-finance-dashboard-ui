@@ -9,6 +9,16 @@ import { toast } from "react-toastify";
 import { CustomDataGrid } from "../components/common/CustomDataGrid";
 import { LineChartComponent } from "../components/common/LineChartComponent";
 import { PieChartComponent } from "../components/common/PieChartComponent";
+
+const columns = [
+  { field: "currency", headerName: "Currency", sortable: true },
+  {
+    field: "rate",
+    headerName: `Rate (USD)`,
+    sortable: true,
+  },
+]
+
 const Dashboard = () => {
   const [exchangeRates, setExchangeRates] = useState({
     base: "EUR",
@@ -38,17 +48,6 @@ const Dashboard = () => {
       });
   }, []);
 
-  const columns = useMemo(
-    () => [
-      { field: "currency", headerName: "Currency", sortable: true },
-      {
-        field: "rate",
-        headerName: `Rate (USD)`,
-        sortable: true,
-      },
-    ],
-    [exchangeRates?.base]
-  );
   const rows = Object.entries(exchangeRates?.rates).map(
     ([currency, rate], index) => ({ id: index, currency, rate })
   );
@@ -214,11 +213,11 @@ const Dashboard = () => {
                 disableColumnResize={true}
                 filterMode="client"
                 autosizeOptions={{
-                    columns: ["currency", "rate"],
-                    includeHeaders: true,
-                    includeOutliers: true,
-                    outliersFactor: 10,
-                    expand: true,
+                  columns: ["currency", "rate"],
+                  includeHeaders: true,
+                  includeOutliers: true,
+                  outliersFactor: 1,
+                  expand: true,
                 }}
                 autosizeOnMount={true}
                 rowHeight={30}
