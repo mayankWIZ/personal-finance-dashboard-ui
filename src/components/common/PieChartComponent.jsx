@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { PieChart, Pie, ResponsiveContainer, LabelList, Sector } from "recharts";
+import { PieChart, Pie, ResponsiveContainer, Sector } from "recharts";
 import { useTheme } from "../../context/ThemeContext";
 
 

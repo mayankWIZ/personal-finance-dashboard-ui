@@ -61,6 +61,16 @@ function getTransactionDashboard() {
     return axiosInstance.get("/transactions/dashboard")
 }
 
+function importTransactions(file, username) {
+    const data = new FormData();
+    data.append("transaction_file", file);
+    return axiosInstance.post(`/transactions/bulk/${username}`, data);
+}
+
+function exportTransactions(username) {
+    return axiosInstance.get(`/transactions/bulk/${username}`);
+}
+
 export {
     getToken,
     getUser,
@@ -76,4 +86,6 @@ export {
     getExchangeRates,
     changePassword,
     getTransactionDashboard,
+    importTransactions,
+    exportTransactions,
 };
