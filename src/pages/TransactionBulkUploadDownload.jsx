@@ -9,11 +9,13 @@ import { Box, Grid2 as Grid, MenuItem, Typography } from "@mui/material";
 import { toast } from "react-toastify";
 import CustomFileUploadButton from "../components/common/CustomFileUploadButton";
 import { CustomButton } from "../components/common/Button";
+import { useAuth } from "../context/AuthContext";
 
 export const TransactionBulkUploadDownload = () => {
-  const [importSelectedUser, setImportSelectedUser] = useState("");
+  const { authState } = useAuth();
+  const [importSelectedUser, setImportSelectedUser] = useState(authState.user.username);
   const [importFile, setImportFile] = useState(null);
-  const [exportSelectedUser, setExportSelectedUser] = useState("");
+  const [exportSelectedUser, setExportSelectedUser] = useState(authState.user.username);
   const [importValidationMessage, setImportValidationMessage] = useState("");
   const [exportValidationMessage, setExportValidationMessage] = useState("");
   const [users, setUsers] = useState([]);
@@ -50,7 +52,7 @@ export const TransactionBulkUploadDownload = () => {
       })
       .catch((error) => {
         toast.error(
-          error.response.data.detail ||
+          error.response?.data?.detail ||
             "Error while importing transactions. Please try again."
         );
       })
@@ -145,8 +147,8 @@ export const TransactionBulkUploadDownload = () => {
                 fullWidth
                 disabled={loading}
               >
-                <MenuItem value="">
-                  <em>None</em>
+                <MenuItem key={authState.user.username} value={authState.user.username}>
+                  Self
                 </MenuItem>
                 {users.map((user) => (
                   <MenuItem key={user.username} value={user.username}>
@@ -235,8 +237,8 @@ export const TransactionBulkUploadDownload = () => {
                 fullWidth
                 disabled={loading}
               >
-                <MenuItem value="">
-                  <em>None</em>
+                <MenuItem key={authState.user.username} value={authState.user.username}>
+                  Self
                 </MenuItem>
                 {users.map((user) => (
                   <MenuItem key={user.username} value={user.username}>

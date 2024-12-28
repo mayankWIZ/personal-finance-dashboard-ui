@@ -6,6 +6,7 @@ import { CustomButton } from "../common/Button";
 import { useTheme } from "../../context/ThemeContext";
 import { CustomSelect } from "../common/CustomSelect";
 import { CustomDateTimeField } from "../common/CustomDateTimeField";
+import dayjs from "dayjs";
 
 const style = {
   border: "2px solid #000",
@@ -17,7 +18,10 @@ const style = {
 };
 
 export const AddTransactionModel = ({ open, handleClose, onSubmit }) => {
-  const [transaction, setTransaction] = useState({});
+  const [transaction, setTransaction] = useState({
+    transactionType: "expense",
+    transactionDate: dayjs(new Date()),
+  });
   const { theme, mode } = useTheme();
 
   const handleInnerSubmit = (e) => {
@@ -74,15 +78,12 @@ export const AddTransactionModel = ({ open, handleClose, onSubmit }) => {
               required={true}
               fullWidth
             >
-              {
-                  ["income", "expense", "investment"].map((transactionType) => {
-                      return (
-                          <MenuItem key={transactionType} value={transactionType}>
-                              {transactionType.toUpperCase()}
-                          </MenuItem>
-                      )
-                  })
-              }
+              <MenuItem key="expense" value="expense">
+                Default
+              </MenuItem>
+              <MenuItem key="income" value="income">
+                Income
+              </MenuItem>
             </CustomSelect>
 
             <CustomDateTimeField
@@ -105,8 +106,8 @@ export const AddTransactionModel = ({ open, handleClose, onSubmit }) => {
               label="Amount"
               fullWidth
               margin="normal"
-              value={transaction?.amount || 0}
-              onChange={(e) => setTransaction({ ...transaction, amount: e.target.value })}
+              value={transaction?.amount}
+              onChange={(e) => setTransaction({ ...transaction, amount: e.target.value ?? 0 })}
               required={true}
               type="number"
               slotProps={{
